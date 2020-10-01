@@ -300,13 +300,14 @@ namespace Otter.Utility
         /// <param name="scene">The Scene to load into.</param>
         public void LoadLevel(string data, Scene scene)
         {
-            data = FileHandling.GetAbsoluteFilePath(data);
+            // data = FileHandling.GetAbsoluteFilePath(data);
             Entities.Clear();
 
             CurrentLevel = data;
 
             var xmlDoc = new XmlDocument();
-            xmlDoc.Load(data);
+            // xmlDoc.Load(data);
+            xmlDoc.LoadXml(data);
 
             var xmlLevel = xmlDoc["level"];
 

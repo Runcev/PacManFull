@@ -2,14 +2,14 @@ using System.Collections.Generic;
 
 namespace GameSolver.Interfaces
 {
-    public interface SearchProblem<State, Action>
+    public interface SearchProblem<S, A>
     {
-        State InitState { get; }
+        S InitState { get; }
 
-        IEnumerable<Action> Actions(State state);
+        IEnumerable<A> Actions(S state);
 
-        bool GoalTest(State state);
+        bool GoalTest(S state);
 
-        double StepCost(State stateFrom, Action action, State stateTo);
+        double StepCost(S stateFrom, A action, S stateTo);
     }
 }

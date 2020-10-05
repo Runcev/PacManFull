@@ -1,0 +1,12 @@
+using System.Collections.Generic;
+using GameSolver.DataStructures;
+using GameSolver.Interfaces;
+using GameSolver.SearchTree;
+
+namespace GameSolver.Abstract
+{
+    public abstract class SearchBase<S, A> where A : class
+    {
+        public abstract Node<S, A> FindNode(ISearchProblem<S, A> problem, InOutCollection<Node<S, A>> frontier);
+    }
+}

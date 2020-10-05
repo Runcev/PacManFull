@@ -60,7 +60,8 @@ namespace PacMan
   
     // A Coin Entity to match the Coin in the Ogmo Project.
     class Food : Entity {
-        public Food(float x, float y) : base(x, y) {
+        public Food(float x, float y) : base(x, y)
+        {
             var img = Image.CreateRectangle(16, 16, Color.Red);
             AddGraphic(img);
             SetHitbox(16, 16, Tags.Food);

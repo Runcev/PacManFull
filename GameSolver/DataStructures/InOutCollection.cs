@@ -41,5 +41,15 @@ namespace GameSolver.DataStructures
         {
             return string.Join(", ", _list);
         }
+
+        public void Clear()
+        {
+            _list.Clear();
+        }
+
+        public T Peek()
+        {
+            return _isStack ? _list.First() : _list.Last();
+        }
     }
 }

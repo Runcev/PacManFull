@@ -14,6 +14,10 @@ namespace GameSolver.SearchTree
             Action = action;
             PathCost = pathCost;
         }
+        
+        public bool IsRootNode() {
+            return Parent == null;
+        }
 
         public override string ToString()
         {

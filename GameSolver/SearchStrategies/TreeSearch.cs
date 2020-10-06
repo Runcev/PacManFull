@@ -16,7 +16,24 @@ namespace GameSolver.SearchStrategies
 
             var root = NodeFactory.CreateNode<S, A>(problem.InitState);
 
-            return root;
+            AddToFrontier(root);
+
+            while (!IsFrontierEmpty())
+            {
+                var node = RemoveFromFrontier();
+
+                if (problem.GoalTest(node.State))
+                {
+                    return node;
+                } 
+                
+                foreach (var successor in NodeFactory.GetSuccessors(node, problem))
+                {
+                    AddToFrontier(successor);
+                }
+            }
+
+            return null;
         }
 
         protected void AddToFrontier(Node<S, A> node)
@@ -26,8 +43,7 @@ namespace GameSolver.SearchStrategies
 
         protected Node<S, A> RemoveFromFrontier()
         {
-            Node<S, A> result = _frontier.Remove();
-            return result;
+            return _frontier.Remove();
         }
         
         protected bool IsFrontierEmpty()

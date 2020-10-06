@@ -2,10 +2,11 @@ using System.Collections.Generic;
 using GameSolver.DataStructures;
 using GameSolver.Interfaces;
 using GameSolver.SearchTree;
+using GameSolver.Utils;
 
 namespace GameSolver.Abstract
 {
-    public abstract class QueueBasedSearchBase<S, A> : ISearchForActions<S, A>, ISearchForState<S, A> where A : class
+    public abstract class QueueBasedSearchBase<S, A> : ISearchForActions<S, A>, ISearchForState<S, A> where A : class where S : class
     {
         private readonly SearchBase<S, A> _impl;
         private readonly InOutCollection<Node<S, A>> _frontier;
@@ -18,12 +19,16 @@ namespace GameSolver.Abstract
         
         public IEnumerable<A> FindActions(ISearchProblem<S, A> problem)
         {
-            throw new System.NotImplementedException();
+            _frontier.Clear();
+            var node = _impl.FindNode(problem, _frontier);
+            return SearchUtils.ToActions(node);
         }
 
         public S FindState(ISearchProblem<S, A> problem)
         {
-            throw new System.NotImplementedException();
+            _frontier.Clear();
+            var node = _impl.FindNode(problem, _frontier);
+            return SearchUtils.ToState(node);
         }
     }
 }

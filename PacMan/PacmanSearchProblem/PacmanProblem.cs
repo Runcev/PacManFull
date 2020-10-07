@@ -25,22 +25,22 @@ namespace PacMan.PacmanSearchProblem
             var actions = new List<MoveAction>();
             if (state.Down.State != TileState.Filled)
             {
-                actions.Add(MoveAction.Down);
+                actions.Add(new MoveAction(MoveActionEnum.Down));
             }
 
             if (state.Up.State != TileState.Filled)
             {
-                actions.Add(MoveAction.Up);
+                actions.Add(new MoveAction(MoveActionEnum.Up));
             }
 
             if (state.Left.State != TileState.Filled)
             {
-                actions.Add(MoveAction.Left);
+                actions.Add(new MoveAction(MoveActionEnum.Left));
             }
 
             if (state.Right.State != TileState.Filled)
             {
-                actions.Add(MoveAction.Right);
+                actions.Add(new MoveAction(MoveActionEnum.Right));
             }
 
             return actions;
@@ -55,13 +55,13 @@ namespace PacMan.PacmanSearchProblem
         {
             int x = state.Center.X;
             int y = state.Center.Y;
-            
-            return action switch
+
+            return action.Action switch
             {
-                MoveAction.Up => GetNearbyTiles(x, y-1),
-                MoveAction.Down => GetNearbyTiles(x, y+1),
-                MoveAction.Left => GetNearbyTiles(x-1, y),
-                MoveAction.Right => GetNearbyTiles(x+1, y),
+                MoveActionEnum.Up => GetNearbyTiles(x - 1, y),
+                MoveActionEnum.Down => GetNearbyTiles(x + 1, y),
+                MoveActionEnum.Left => GetNearbyTiles(x, y - 1),
+                MoveActionEnum.Right => GetNearbyTiles(x, y + 1),
                 _ => null
             };
         }
@@ -94,10 +94,10 @@ namespace PacMan.PacmanSearchProblem
             return new NearbyTiles
             {
                 Center = new Tile {State = GetState(i, j), X = i, Y = j},
-                Down = new Tile {State = GetState(i, j + 1), X = i, Y = j + 1},
-                Up = new Tile {State = GetState(i, j - 1), X = i, Y = j - 1},
-                Left = new Tile {State = GetState(i - 1, j), X = i - 1, Y = j},
-                Right = new Tile {State = GetState(i + 1, j), X = i + 1, Y = j},
+                Down = new Tile {State = GetState(i + 1, j), X = i + 1, Y = j},
+                Up = new Tile {State = GetState(i - 1, j), X = i - 1, Y = j},
+                Left = new Tile {State = GetState(i, j - 1), X = i, Y = j - 1},
+                Right = new Tile {State = GetState(i, j + 1), X = i, Y = j + 1},
             };
         }
 

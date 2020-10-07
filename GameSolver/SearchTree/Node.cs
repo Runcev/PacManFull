@@ -18,10 +18,5 @@ namespace GameSolver.SearchTree
         public bool IsRootNode() {
             return Parent == null;
         }
-
-        public override string ToString()
-        {
-            return $"[parent={Parent}, action={Action}, state={State}, pathCost={PathCost}]";
-        }
     }
 }

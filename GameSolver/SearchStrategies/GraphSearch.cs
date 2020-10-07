@@ -15,7 +15,7 @@ namespace GameSolver.SearchStrategies
             return base.FindNode(problem, frontier);
         }
 
-        protected new void AddToFrontier(Node<S, A> node)
+        protected override void AddToFrontier(Node<S, A> node)
         {
             if (!_explored.Contains(node.State))
             {
@@ -23,7 +23,7 @@ namespace GameSolver.SearchStrategies
             }
         }
 
-        protected new Node<S, A> RemoveFromFrontier()
+        protected override Node<S, A> RemoveFromFrontier()
         {
             CleanUpFrontier();
             var result = _frontier.Remove();
@@ -31,7 +31,7 @@ namespace GameSolver.SearchStrategies
             return result;
         }
 
-        protected new bool IsFrontierEmpty()
+        protected override bool IsFrontierEmpty()
         {
             CleanUpFrontier();
             return _frontier.Empty();

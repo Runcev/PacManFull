@@ -36,17 +36,17 @@ namespace GameSolver.SearchStrategies
             return null;
         }
 
-        protected void AddToFrontier(Node<S, A> node)
+        protected virtual void AddToFrontier(Node<S, A> node)
         {
             _frontier.Add(node);
         }
 
-        protected Node<S, A> RemoveFromFrontier()
+        protected virtual Node<S, A> RemoveFromFrontier()
         {
             return _frontier.Remove();
         }
         
-        protected bool IsFrontierEmpty()
+        protected virtual bool IsFrontierEmpty()
         {
             return _frontier.Empty();
         }

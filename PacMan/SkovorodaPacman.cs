@@ -38,7 +38,7 @@ namespace PacMan
 
             var map = LevelReader(levelPath);
             map[1][1] = 2;
-            map[13][18] = 3;
+            map[14][14] = 3;
 
             var problem = new PacmanProblem(map);
 
@@ -47,7 +47,7 @@ namespace PacMan
             var search = new DFS<NearbyTiles, MoveAction>(graphSearch);
             var actions = search.FindActions(problem);
             
-            var skovoroda = new Skovoroda(40 * 17, 40 * 14);
+            var skovoroda = new Skovoroda(40 * 14, 40 * 14);
             var world = new World(40, 40);
             scene.Add(skovoroda);
             scene.Add(world);
@@ -75,11 +75,16 @@ namespace PacMan
                         _ => 0
                     };
                     
-                    await Task.Delay(500);
+                    await Task.Delay(10);
                 }
             });
 
             Task.WaitAll(gameRun, doActions);
+            
+            Console.WriteLine($"Time of algorithm : {graphSearch.GetTime()}");
+            Console.WriteLine($"Steps of algorithm: {graphSearch.GetSteps()}");
+            Console.WriteLine($"Steps of Pacman: {actions.Count()}");
+            Console.WriteLine($"Memory: {graphSearch.GetMemory()/1024f/1024f}");
         }
 
         public static int[][] LevelReader(string path)

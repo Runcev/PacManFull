@@ -38,6 +38,7 @@ namespace GameSolver.SearchStrategies
                 {
                     startTime.Stop();
                     times = startTime.Elapsed;
+                    bytes -= GC.GetTotalMemory(true);
                     return node;
                 }
 
@@ -46,7 +47,9 @@ namespace GameSolver.SearchStrategies
                     AddToFrontier(successor);
                 }
             }
-
+            
+            
+            bytes -= GC.GetTotalMemory(true);
             startTime.Stop();
             times = startTime.Elapsed;
 
@@ -55,8 +58,6 @@ namespace GameSolver.SearchStrategies
 
         public override long GetMemory()
         {
-            bytes -= GC.GetTotalMemory(true);
-
             return -bytes;
         }
 

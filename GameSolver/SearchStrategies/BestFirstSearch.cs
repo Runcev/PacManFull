@@ -9,9 +9,9 @@ namespace GameSolver.SearchStrategies
     public class BestFirstSearch<S, A> : QueueBasedSearchBase<S, A>, IInformedSearch<S, A>
         where A : class where S : class
     {
-        public BestFirstSearch(SearchBase<S, A> impl, Func<Node<S, A>, double> fn) : base(impl, new PriorityQueue<Node<S, A>>(fn))
+        public BestFirstSearch(SearchBase<S, A> impl, Func<Node<S, A>, double> h) : base(impl, new PriorityQueue<Node<S, A>>(h))
         {
-            Heuristic = fn;
+            Heuristic = h;
         }
 
         public Func<Node<S, A>, double> Heuristic { get; }

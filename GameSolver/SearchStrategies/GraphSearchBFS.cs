@@ -5,44 +5,38 @@ using GameSolver.SearchTree;
 
 namespace GameSolver.SearchStrategies
 {
-    public class GraphSearch<S, A> : TreeSearch<S, A> where A : class
+    public class GraphSearchBFS<S, A> : TreeSearch<S, A> where A : class where S : class
     {
         private readonly HashSet<S> _explored = new HashSet<S>();
+        private readonly HashSet<S> _frontierStates = new HashSet<S>();
 
         public override Node<S, A> FindNode(ISearchProblem<S, A> problem, InOutCollection<Node<S, A>> frontier)
         {
             _explored.Clear();
+            _frontierStates.Clear();
             return base.FindNode(problem, frontier);
         }
 
         protected override void AddToFrontier(Node<S, A> node)
         {
-            if (!_explored.Contains(node.State))
+            if (!_explored.Contains(node.State) && !_frontierStates.Contains(node.State))
             {
                 Frontier.Add(node);
+                _frontierStates.Add(node.State);
             }
         }
 
         protected override Node<S, A> RemoveFromFrontier()
         {
-            CleanUpFrontier();
-            var result = Frontier.Remove();
-            _explored.Add(result.State);
-            return result;
+            var res = Frontier.Remove();
+            _explored.Add(res.State);
+            _frontierStates.Remove(res.State);
+            return res;
         }
 
         protected override bool IsFrontierEmpty()
         {
-            CleanUpFrontier();
             return Frontier.Empty();
-        }
-
-        private void CleanUpFrontier()
-        {
-            while (!Frontier.Empty() && _explored.Contains(Frontier.Peek().State))
-            {
-                Frontier.Remove();
-            }
         }
     }
 }

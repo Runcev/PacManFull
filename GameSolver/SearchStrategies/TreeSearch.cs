@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using GameSolver.Abstract;
 using GameSolver.DataStructures;
 using GameSolver.Interfaces;
@@ -9,36 +9,40 @@ namespace GameSolver.SearchStrategies
 {
     public class TreeSearch<S, A> : SearchBase<S, A> where A : class
     {
-        private int count = 0;
-        private long bytes = 0;
+        private int _count;
+        private long _bytes;
 
-        private TimeSpan times = new TimeSpan(0, 0, 0);
+        private TimeSpan _times = new TimeSpan(0, 0, 0);
 
-        protected InOutCollection<Node<S, A>> _frontier;
+        protected InOutCollection<Node<S, A>> Frontier;
 
         public override Node<S, A> FindNode(ISearchProblem<S, A> problem, InOutCollection<Node<S, A>> frontier)
         {
-            bytes = GC.GetTotalMemory(true);
+            _bytes = GC.GetTotalMemory(true);
 
-            var startTime = System.Diagnostics.Stopwatch.StartNew();
+            var startTime = Stopwatch.StartNew();
             startTime.Start();
 
-            _frontier = frontier;
+            Frontier = frontier;
 
             var root = NodeFactory.CreateNode<S, A>(problem.InitState);
 
             AddToFrontier(root);
 
+            long maxMemory = _bytes;
+
             while (!IsFrontierEmpty())
             {
-                count++;
+                maxMemory = Math.Max(maxMemory, GC.GetTotalMemory(false));
+                
+                _count++;
                 var node = RemoveFromFrontier();
 
                 if (problem.GoalTest(node.State))
                 {
                     startTime.Stop();
-                    times = startTime.Elapsed;
-                    bytes -= GC.GetTotalMemory(true);
+                    _times = startTime.Elapsed;
+                    _bytes -= maxMemory;
                     return node;
                 }
 
@@ -47,44 +51,43 @@ namespace GameSolver.SearchStrategies
                     AddToFrontier(successor);
                 }
             }
-            
-            
-            bytes -= GC.GetTotalMemory(true);
+
+            _bytes -= maxMemory;
             startTime.Stop();
-            times = startTime.Elapsed;
+            _times = startTime.Elapsed;
 
             return null;
         }
 
         public override long GetMemory()
         {
-            return -bytes;
+            return -_bytes;
         }
 
         public override TimeSpan GetTime()
         {
-            return times;
+            return _times;
         }
 
         public override int GetSteps()
         {
-            return count;
+            return _count;
         }
 
         protected virtual void AddToFrontier(Node<S, A> node)
         {
-            _frontier.Add(node);
+            Frontier.Add(node);
         }
 
         protected virtual Node<S, A> RemoveFromFrontier()
         {
-            count++;
-            return _frontier.Remove();
+            _count++;
+            return Frontier.Remove();
         }
 
         protected virtual bool IsFrontierEmpty()
         {
-            return _frontier.Empty();
+            return Frontier.Empty();
         }
     }
 }

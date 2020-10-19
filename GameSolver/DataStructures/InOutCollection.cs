@@ -14,7 +14,7 @@ namespace GameSolver.DataStructures
             _isStack = isStack;
         }
 
-        public void Add(T value)
+        public virtual void Add(T value)
         {
             if (_isStack)
             {
@@ -26,28 +26,28 @@ namespace GameSolver.DataStructures
             }
         }
 
-        public T Remove()
+        public virtual T Remove()
         {
             var last = _list.First();
             _list.RemoveFirst();
             return last;
         }
 
-        public int Length => _list.Count();
+        public virtual int Length => _list.Count();
 
-        public bool Empty() => !_list.Any();
+        public virtual bool Empty() => !_list.Any();
 
         public override string ToString()
         {
             return string.Join(", ", _list);
         }
 
-        public void Clear()
+        public virtual void Clear()
         {
             _list.Clear();
         }
 
-        public T Peek()
+        public virtual T Peek()
         {
             return _isStack ? _list.First() : _list.Last();
         }

@@ -7,12 +7,12 @@ using Otter.Utility;
 
 namespace PacMan.Utils
 {
-    public class MapUtils
+    public class GameUtils
     {
         private const string LevelPath = "level.oel";
         private const string ProjPath = "project.oep";
-        
-        public static OgmoProject OgmoProject {get;} = new OgmoProject(ProjPath);
+
+        public static OgmoProject OgmoProject { get; } = new OgmoProject(ProjPath);
 
         public static int[][] Map { get; } = LevelReader(LevelPath);
 
@@ -48,6 +48,9 @@ namespace PacMan.Utils
             {
                 levelMatrix[i] = Array.ConvertAll(char2dArray[i], c => (int) Char.GetNumericValue(c) == 3 ? 1 : 0);
             }
+
+            levelMatrix[1][1] = 2;
+            levelMatrix[14][17] = 3;
 
             return levelMatrix;
         }

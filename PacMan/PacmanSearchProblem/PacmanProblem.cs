@@ -97,7 +97,7 @@ namespace PacMan.PacmanSearchProblem
                 Down = new Tile {State = GetState(i + 1, j), X = i + 1, Y = j},
                 Up = new Tile {State = GetState(i - 1, j), X = i - 1, Y = j},
                 Left = new Tile {State = GetState(i, j - 1), X = i, Y = j - 1},
-                Right = new Tile {State = GetState(i, j + 1), X = i, Y = j + 1},
+                Right = new Tile {State = GetState(i, j + 1), X = i, Y = j + 1}
             };
         }
 

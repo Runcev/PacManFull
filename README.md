@@ -13,8 +13,12 @@ Requires .net 3.1
 1. dotnet publish  -o D:\PACMAN
 ```
 ---
-# Results   
+# Results 
+### Map
+
 ### Tick was 60 fps
+
+
 
 | Algorithm     | Time          | Memory usage  |  Pacman Moves| Algo Moves |
 | ------------- |:-------------:| -------------:| ------------:| --------:|

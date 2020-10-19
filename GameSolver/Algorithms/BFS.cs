@@ -9,5 +9,7 @@ namespace GameSolver.Algorithms
         public BFS(SearchBase<S, A> impl) : base(impl, new InOutCollection<Node<S, A>>(false))
         {
         }
+        
+        
     }
 }

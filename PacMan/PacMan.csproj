@@ -2,6 +2,19 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <OutputType>Exe</OutputType>
     </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\GameSolver\GameSolver.csproj" />
+      <ProjectReference Include="..\Otter\Otter.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="*.jpg;*.ogg;*.png;*.oep;*.oel">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
 
 </Project>

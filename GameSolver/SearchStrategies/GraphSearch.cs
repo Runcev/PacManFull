@@ -19,14 +19,14 @@ namespace GameSolver.SearchStrategies
         {
             if (!_explored.Contains(node.State))
             {
-                _frontier.Add(node);
+                Frontier.Add(node);
             }
         }
 
         protected override Node<S, A> RemoveFromFrontier()
         {
             CleanUpFrontier();
-            var result = _frontier.Remove();
+            var result = Frontier.Remove();
             _explored.Add(result.State);
             return result;
         }
@@ -34,14 +34,14 @@ namespace GameSolver.SearchStrategies
         protected override bool IsFrontierEmpty()
         {
             CleanUpFrontier();
-            return _frontier.Empty();
+            return Frontier.Empty();
         }
 
         private void CleanUpFrontier()
         {
-            while (!_frontier.Empty() && _explored.Contains(_frontier.Peek().State))
+            while (!Frontier.Empty() && _explored.Contains(Frontier.Peek().State))
             {
-                _frontier.Remove();
+                Frontier.Remove();
             }
         }
     }

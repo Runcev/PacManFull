@@ -53,6 +53,15 @@ namespace PacMan.Scenes
                 Y = 290
             };
             AddGraphic(memory);
+            
+            var space = new Text
+            {
+                String = "Press space to return\nto main menu",
+                FontSize = 70,
+                X = 30,
+                Y = 600
+            };
+            AddGraphic(space);
         }
 
         public override void Update()

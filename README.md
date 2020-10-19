@@ -1,24 +1,21 @@
-# Pacman game with Algorithms
+# Skovoroda Pacman game with Algorithms
 
 ## This project was done by Yevhen Borodaikevych, Kenyiz Vitalii, Kurochkin Denys.
 
-#### Yevhen - 
-#### Vitalii - 
-#### Denys -
+#### Yevhen - TBA
+#### Vitalii - TBA
+#### Denys - TBA
 ____
 ##
-**To start up the project do the following commands**<br>
-Requires .net 3.1
+**To start up the project clone this repo and run the following commands in a root folder**<br>
+Requires .net core 3.1
 ```
-1. dotnet publish  -o D:\PACMAN
+1. dotnet publish -o <output directory path>
 ```
 ---
 # Results 
 ### Map
-
-### Tick was 60 fps
-
-
+![map](https://i.imgur.com/fSkiuuN.png)
 
 | Algorithm     | Time          | Memory usage  |  Pacman Moves| Algo Moves |
 | ------------- |:-------------:| -------------:| ------------:| --------:|

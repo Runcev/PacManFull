@@ -2,9 +2,9 @@
 
 ## This project was done by Yevhen Borodaikevych, Kenyiz Vitalii, Kurochkin Denys.
 
-#### Yevhen - TBA
-#### Vitalii - TBA
-#### Denys - TBA
+#### Yevhen - Abstractions
+#### Vitalii - Algorithms
+#### Denys - Map, UI, music and skovoroda style
 ____
 ##
 **To start up the project clone this repo and run the following commands in a root folder**<br>

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace GameSolver.Full
 {
-    public class MiniMaxSearch<S, A, P> : IAdversialSearch<S, A>
+    public class MiniMaxSearch<S, A, P> : IAdversarialSearch<S, A> where A : class
     {
         private readonly IGame<S, A, P> _game;
 
@@ -19,7 +19,7 @@ namespace GameSolver.Full
 
         public A MakeDecision(S state)
         {
-            var result = default(A);
+            A result = null;
             var resultValue = double.NegativeInfinity;
             var player = _game.GetPlayer(state);
             foreach (var action in _game.GetActions(state))
@@ -35,24 +35,30 @@ namespace GameSolver.Full
             return result;
         }
 
-        public double MinValue(S state, P player)
+        private double MinValue(S state, P player)
         {
             if (_game.IsTerminal(state))
             {
                 return _game.GetUtility(state, player);
             }
 
-            return _game.GetActions(state).Where()
+            return _game.GetActions(state)
+                .Select(a => MaxValue(_game.GetResult(state, a), player))
+                .DefaultIfEmpty(double.PositiveInfinity)
+                .Min();
         }
 
-        public double MaxValue(S state, P player)
+        private double MaxValue(S state, P player)
         {
             if (_game.IsTerminal(state))
             {
                 return _game.GetUtility(state, player);
             }
 
-            return _game.GetActions(state).Where(action => MinValue(_game.GetResult(state, action), player)).Min() ?? double.PositiveInfinity;
+            return _game.GetActions(state)
+                .Select(a => MinValue(_game.GetResult(state, a), player))
+                .DefaultIfEmpty(double.NegativeInfinity)
+                .Max();
         }
     }
 }

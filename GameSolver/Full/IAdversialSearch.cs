@@ -1,6 +1,6 @@
 ﻿namespace GameSolver.Full
 {
-    public interface IAdversialSearch<S,A>
+    public interface IAdversarialSearch<in S, out A> where A : class
     {
         A MakeDecision(S state);
         

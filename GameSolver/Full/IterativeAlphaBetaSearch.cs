@@ -5,7 +5,7 @@ using System.Timers;
 
 namespace GameSolver.Full
 {
-    public class IterativeAlphaBetaSearch<S,A,P> : IAdversialSearch<S,A>
+    public class IterativeAlphaBetaSearch<S, A, P> : IAdversarialSearch<S, A> where A : class
     {
         private readonly IGame<S, A, P> _game;
         private readonly double _utilMin;
@@ -13,20 +13,13 @@ namespace GameSolver.Full
         private int _currDepthLimit;
         private bool _heuristicEvaluationUsed;
         private readonly Timer _timer;
-        private bool _logEnabled;
-
 
         public IterativeAlphaBetaSearch(IGame<S, A, P> game, double utilMin, double utilMax, int time)
         {
             _game = game;
             _utilMin = utilMin;
             _utilMax = utilMax;
-            _timer =  new Timer(time);
-        }
-
-        public void SetLogEnabled(bool b)
-        {
-            _logEnabled = b;
+            _timer = new Timer(time);
         }
 
         public A MakeDecision(S state)
@@ -38,12 +31,7 @@ namespace GameSolver.Full
 
             do
             {
-                IncrementDepthLimit();
-                if (_logEnabled)
-                {
-
-                }
-
+                _currDepthLimit++;
                 _heuristicEvaluationUsed = false;
                 var newResults = new ActionStore<A>();
                 foreach (var action in results)
@@ -57,15 +45,6 @@ namespace GameSolver.Full
                     }
 
                     newResults.Add(action, value);
-                    if (_logEnabled)
-                    {
-                        //TODO
-                    }
-                }
-
-                if (_logEnabled)
-                {
-                    Console.WriteLine();
                 }
 
                 if (newResults.Size() > 0)
@@ -73,11 +52,13 @@ namespace GameSolver.Full
                     results = newResults.Actions;
                     if (!_timer.TimeOutOccurred())
                     {
-                        if (HasSafeWinner(newResults.UtilValues.ElementAt(0)))
+                        if (HasSafeWinner(newResults.UtilValues[0]))
                         {
                             break;
                         }
-                        else if (newResults.Size() > 1 && IsSignificantlyBetter(newResults.UtilValues.ElementAt(0), newResults.UtilValues.ElementAt(1)))
+
+                        if (newResults.Size() > 1 && IsSignificantlyBetter(newResults.UtilValues[0],
+                            newResults.UtilValues[1]))
                         {
                             break;
                         }
@@ -85,38 +66,38 @@ namespace GameSolver.Full
                 }
             } while (!_timer.TimeOutOccurred() && _heuristicEvaluationUsed);
 
-            return results.ElementAt(0);
+            return results[0];
         }
-        
-        public double MaxValue(S state, P player, double alpha, double beta, int depth) 
-        {
-            if (_game.IsTerminal(state) || depth >= _currDepthLimit || _timer.TimeOutOccurred()) 
-            {
-                return Eval(state, player);
-            } 
-            else {
-                var value = double.NegativeInfinity;
-                foreach (var action in OrderActions(state, _game.GetActions(state), player, depth))
-                {
-                    value = Math.Max(value, MinValue(_game.GetResult(state, action), player, alpha, beta, depth + 1));
-                    if (value >= beta)
-                    {
-                        return value;
-                    }
 
-                    alpha = Math.Max(alpha, value);
-                }
-                return value;
-            }
-        }
-        
-        public double MinValue(S state, P player, double alpha, double beta, int depth) 
+        public double MaxValue(S state, P player, double alpha, double beta, int depth)
         {
-            if (_game.IsTerminal(state) || depth >= _currDepthLimit || _timer.TimeOutOccurred()) 
+            if (_game.IsTerminal(state) || depth >= _currDepthLimit || _timer.TimeOutOccurred())
             {
                 return Eval(state, player);
-            } 
-            else 
+            }
+
+            var value = double.NegativeInfinity;
+            foreach (var action in OrderActions(state, _game.GetActions(state), player, depth))
+            {
+                value = Math.Max(value, MinValue(_game.GetResult(state, action), player, alpha, beta, depth + 1));
+                if (value >= beta)
+                {
+                    return value;
+                }
+
+                alpha = Math.Max(alpha, value);
+            }
+
+            return value;
+        }
+
+        public double MinValue(S state, P player, double alpha, double beta, int depth)
+        {
+            if (_game.IsTerminal(state) || depth >= _currDepthLimit || _timer.TimeOutOccurred())
+            {
+                return Eval(state, player);
+            }
+            else
             {
                 var value = double.PositiveInfinity;
                 foreach (var action in OrderActions(state, _game.GetActions(state), player, depth))
@@ -129,73 +110,74 @@ namespace GameSolver.Full
 
                     beta = Math.Min(beta, value);
                 }
+
                 return value;
             }
         }
-
-        private void IncrementDepthLimit() {
-            _currDepthLimit++;
-        }
-
-        private static bool IsSignificantlyBetter(double newUtility, double utility) {
+        
+        private static bool IsSignificantlyBetter(double newUtility, double utility)
+        {
             return false;
         }
 
-        private bool HasSafeWinner(double resultUtility) {
+        private bool HasSafeWinner(double resultUtility)
+        {
             return resultUtility <= _utilMin || resultUtility >= _utilMax;
         }
 
-        private double Eval(S state, P player) {
-            if (_game.IsTerminal(state)) 
+        private double Eval(S state, P player)
+        {
+            if (_game.IsTerminal(state))
             {
                 return _game.GetUtility(state, player);
             }
-            else {
-                _heuristicEvaluationUsed = true;
-                return (_utilMin + _utilMax) / 2;
-            }
+
+            _heuristicEvaluationUsed = true;
+            return (_utilMin + _utilMax) / 2;
         }
 
-        private static List<A> OrderActions(S state, List<A> actions, P player, int depth) {
+        private static List<A> OrderActions(S state, List<A> actions, P player, int depth)
+        {
             return actions;
         }
-        
     }
-    
-    
-    public sealed class Timer {
-        private static long duration;
-        private static long startTime;
 
-        public Timer(int maxSeconds) => duration = 1000 * maxSeconds;
 
-        public void Start() {
-            startTime = DateTime.Now.Millisecond;
+    public class Timer
+    {
+        private readonly long _duration;
+        private long _startTime;
+
+        public Timer(int maxSeconds) => _duration = 1000 * maxSeconds;
+
+        public void Start()
+        {
+            _startTime = DateTime.Now.Millisecond;
         }
 
-        public bool TimeOutOccurred() {
-            return DateTime.Now.Millisecond > startTime + duration;
+        public bool TimeOutOccurred()
+        {
+            return DateTime.Now.Millisecond > _startTime + _duration;
         }
     }
-    
-    public sealed class ActionStore<A> {
-        public readonly List<A> Actions = new List<A>();
-        public readonly List<double> UtilValues = new List<double>();
 
-        public void Add(A action, double utilValue) {
+    public sealed class ActionStore<A>
+    {
+        public List<A> Actions { get; } = new List<A>();
+        public List<double> UtilValues { get; } = new List<double>();
+
+        public void Add(A action, double utilValue)
+        {
             var idx = 0;
-            while (idx < Actions.Count && utilValue <= UtilValues.ElementAt(idx))
+            while (idx < Actions.Count && utilValue <= UtilValues[idx])
             {
                 idx++;
             }
 
-            Actions.Add(idx, action);
-            UtilValues.Add(idx, utilValue);
+            Actions[idx] = action;
+            UtilValues[idx] = utilValue;
         }
 
-        public int Size()
-        {
-            return Actions.Count;
-        }
+        public int Size() => Actions.Count;
     }
 }

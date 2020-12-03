@@ -1,10 +1,9 @@
 # Skovoroda Pacman game with Algorithms
 
-## This project was done by Yevhen Borodaikevych, Kenyiz Vitalii, Kurochkin Denys.
+## This project was done by Yevhen Borodaikevych, Kenyiz Vitalii.
 
-#### Yevhen - Abstractions
+#### Yevhen - Abstractions and UI
 #### Vitalii - Algorithms
-#### Denys - Map, UI, music and skovoroda style
 ____
 ##
 **To start up the project clone this repo and run the following commands in a root folder**<br>
